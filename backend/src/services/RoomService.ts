@@ -1,0 +1,18 @@
+import { Room } from '../domain/Room';
+import { IRoomService } from './IRoomService';
+
+export class RoomService implements IRoomService {
+  static rooms: Room[] = [];
+
+  getRooms() {
+    return RoomService.rooms;
+  }
+
+  getRoomById(roomId: string) {
+    return RoomService.rooms.find((room) => room.roomId == roomId);
+  }
+
+  addRoom(room: Room) {
+    RoomService.rooms.push(room);
+  }
+}
