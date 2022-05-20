@@ -15,4 +15,8 @@ export class UserService implements IUserService {
   addUser(user: User) {
     UserService.users.push(user);
   }
+
+  removeUser(userId: string) {
+    UserService.users = UserService.users.filter((usr) => usr.userId != userId);
+  }
 }

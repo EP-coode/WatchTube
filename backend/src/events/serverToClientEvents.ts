@@ -1,6 +1,9 @@
 import { Room } from '../domain/Room';
+import { User } from '../domain/User';
 
 export interface ServerToClientEvents {
   ping: (response: string) => void;
-  joinedRoom: (room: Room) => void;
+  onRoomChange: (room: Room) => void;
+  onUserChange: (user: User) => void;
+  onRoomClose: () => void;
 }
