@@ -1,4 +1,4 @@
-import { Room } from '../domain/Room';
+import { Room } from '../common/Room';
 
 export interface IRoomService {
   getRooms: () => Room[];

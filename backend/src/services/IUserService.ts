@@ -1,4 +1,4 @@
-import { User } from '../domain/User';
+import { User } from '../common/User';
 
 export interface IUserService {
   getUsers: () => User[];

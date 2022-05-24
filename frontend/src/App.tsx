@@ -2,6 +2,8 @@ import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { User } from 'watch-tube-backend/User';
+
 function App() {
   const [count, setCount] = useState(0);
 

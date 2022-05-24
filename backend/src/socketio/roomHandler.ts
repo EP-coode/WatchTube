@@ -3,10 +3,10 @@ import { randomBytes } from 'crypto';
 
 import { ServerToClientEvents } from '../events/serverToClientEvents';
 import { ClientToServerEvents } from '../events/clientToServerEvents';
-import { User } from '../domain/User';
+import { User } from '../common/User';
 import { IRoomService } from '../services/IRoomService';
 import { IUserService } from '../services/IUserService';
-import { Room } from '../domain/Room';
+import { Room } from '../common/Room';
 
 export const registerRoomHandlers = async (
   io: Server<ClientToServerEvents, ServerToClientEvents>,

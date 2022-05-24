@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "watch-tube-backend": "file:../backend/src/common"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
