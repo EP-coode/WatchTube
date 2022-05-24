@@ -24,7 +24,11 @@ export default function TextInputDialog({
   onFormSubmit,
   submitLabel,
 }: FormDialogProps) {
-  const handleFormSubmit = () => {};
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const handleFormSubmit = () => {
+    onFormSubmit(inputValue);
+  };
 
   return (
     <div>
@@ -39,6 +43,8 @@ export default function TextInputDialog({
             type="text"
             fullWidth
             variant="standard"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
