@@ -1,4 +1,4 @@
-import { Room } from '../domain/Room';
+import { Room } from '../common/Room';
 import { IRoomService } from './IRoomService';
 
 export class RoomService implements IRoomService {

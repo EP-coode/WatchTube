@@ -1,4 +1,4 @@
-import { User } from '../domain/User';
+import { User } from '../common/User';
 import { IUserService } from './IUserService';
 
 export class UserService implements IUserService {

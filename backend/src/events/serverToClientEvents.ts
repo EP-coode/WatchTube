@@ -1,5 +1,5 @@
-import { Room } from '../domain/Room';
-import { User } from '../domain/User';
+import { Room } from '../common/Room';
+import { User } from '../common/User';
 
 export interface ServerToClientEvents {
   ping: (response: string) => void;
