@@ -33,6 +33,13 @@ export const registerRoomHandlers = async (
     if (room == undefined) return Promise.resolve();
 
     const user = new User(socket.id, userNick);
+
+    const alreadyInRoom =
+      room.isOwner(user) ||
+      room.participants.findIndex((u) => u.userId != socket.id);
+
+    if (alreadyInRoom) return Promise.resolve();
+
     room.addParticipant(user);
     await socket.join(roomId);
 
