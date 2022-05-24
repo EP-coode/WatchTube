@@ -3,8 +3,8 @@ import http from 'http';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
 
-import { ServerToClientEvents } from './interfaces/serverToClientEvents';
-import { ClientToServerEvents } from './interfaces/clientToServerEvents';
+import { ServerToClientEvents } from './events/serverToClientEvents';
+import { ClientToServerEvents } from './events/clientToServerEvents';
 import { onConnection } from './socketio/connectionHandler';
 
 dotenv.config();
