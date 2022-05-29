@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents } from 'watch-tube-backend/events/clientToServerEvents';
 import { ServerToClientEvents } from 'watch-tube-backend/events/serverToClientEvents';
 
-type SocketStatus = 'active' | 'error' | 'connecting' | 'unactive';
+export type SocketStatus = 'active' | 'error' | 'connecting' | 'unactive';
 
 export const useSocket = (): [
   Socket<ServerToClientEvents, ClientToServerEvents>,
