@@ -15,6 +15,12 @@ const app = createExpressApp();
 const server = http.createServer(app);
 export const io = new Server<ServerToClientEvents, ClientToServerEvents>(
   server,
+  {
+    cors: {
+      origin: 'http://localhost:3000',
+      methods: ['GET', 'POST'],
+    },
+  },
 );
 io.on('connection', onConnection);
 
