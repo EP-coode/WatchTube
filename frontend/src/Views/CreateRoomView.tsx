@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
 
 import TextInputDialog from '../Components/TextInputDialog';
-import { ClientToServerEvents } from 'watch-tube-backend/events/clientToServerEvents';
-import { ServerToClientEvents } from 'watch-tube-backend/events/serverToClientEvents';
 import { Room } from 'watch-tube-backend/common/Room';
+import { useNavigate } from 'react-router';
+import { useSocket } from '../hooks/useSocket';
 
 function CreateRoomView() {
   // TODO make custom hook to remove redundant code
-  const [socket, setSocket] = useState<
-    Socket<ServerToClientEvents, ClientToServerEvents> | undefined
-  >(undefined);
+  const [socket, socketStatus] = useSocket();
   const [createRoomEmmited, setCreateRoomEmmited] = useState(false);
+  const navigate = useNavigate();
+
+  const navigateToRoomView = (roomId: string) => {
+    navigate(`/room/${roomId}`);
+  };
 
   const handleFormSubmit = (userNickName: string) => {
     if (!socket || !socket.active) return;
@@ -21,20 +23,13 @@ function CreateRoomView() {
   };
 
   useEffect(() => {
-    const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-      io('localhost:8000');
-    socket.connect();
-    setSocket(socket);
+    if (socketStatus != 'active') return;
 
     socket.on('onRoomChange', (room: Room) => {
       console.log('Created Room: ', room);
+      navigateToRoomView(room.roomId);
     });
-
-    return () => {
-      socket.disconnect();
-      setSocket(undefined);
-    };
-  }, []);
+  }, [socketStatus]);
 
   return (
     <TextInputDialog

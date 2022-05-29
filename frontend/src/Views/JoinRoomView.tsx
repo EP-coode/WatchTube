@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { io, Socket } from 'socket.io-client';
+import { useNavigate, useParams } from 'react-router';
 import { Room } from 'watch-tube-backend/common/Room';
-import { ClientToServerEvents } from 'watch-tube-backend/events/clientToServerEvents';
-import { ServerToClientEvents } from 'watch-tube-backend/events/serverToClientEvents';
 
 import TextInputDialog from '../Components/TextInputDialog';
+import { useSocket } from '../hooks/useSocket';
 
 const JoinRoomView = () => {
   const { roomId } = useParams();
+  const navigate = useNavigate();
 
-  const [socket, setSocket] = useState<
-    Socket<ServerToClientEvents, ClientToServerEvents> | undefined
-  >(undefined);
+  const [socket, socketStatus] = useSocket();
   const [createRoomEmmited, setCreateRoomEmmited] = useState(false);
+
+  const navigateToRoomView = (roomId: string) => {
+    navigate(`/room/${roomId}`);
+  };
 
   const handleFormSubmit = (userNickName: string) => {
     if (!socket || !socket.active || !roomId) return;
@@ -23,20 +24,13 @@ const JoinRoomView = () => {
   };
 
   useEffect(() => {
-    const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-      io('localhost:8000');
-    socket.connect();
-    setSocket(socket);
+    if (socketStatus != 'active') return;
 
     socket.on('onRoomChange', (room: Room) => {
-      console.log('Created Room: ', room);
+      console.log('Joined Room: ', room);
+      navigateToRoomView(room.roomId);
     });
-
-    return () => {
-      socket.disconnect();
-      setSocket(undefined);
-    };
-  }, []);
+  }, [socketStatus]);
 
   return (
     <div>
