@@ -1,7 +1,9 @@
 import { User } from './User';
+import { Movie } from './Movie';
 
 export class Room {
   participants: User[];
+  public movie: Movie;
 
   constructor(public roomId: string, public owner: User) {
     this.participants = [];
