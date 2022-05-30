@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { SocketContextProvider } from './Context/SocketContext';
 
 import CreateRoomView from './Views/CreateRoomView';
 import JoinRoomView from './Views/JoinRoomView';
@@ -7,12 +8,14 @@ import RoomView from './Views/RoomView';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<CreateRoomView />} />
-        <Route path="/joinRoom/:roomId" element={<JoinRoomView />} />
-        <Route path="/room/:roomId" element={<RoomView />} />
-      </Routes>
-    </BrowserRouter>
+    <SocketContextProvider socketServerUrl="127.0.0.1:8000">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<CreateRoomView />} />
+          <Route path="/joinRoom/:roomId" element={<JoinRoomView />} />
+          <Route path="/room/:roomId" element={<RoomView />} />
+        </Routes>
+      </BrowserRouter>
+    </SocketContextProvider>
   );
 }

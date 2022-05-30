@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import TextInputDialog from '../Components/TextInputDialog';
 import { Room } from 'watch-tube-backend/common/Room';
 import { useNavigate } from 'react-router';
-import { useSocket } from '../hooks/useSocket';
+import { ISokcketContext, SocketContext } from '../Context/SocketContext';
 
 function CreateRoomView() {
   // TODO make custom hook to remove redundant code
-  const [socket, socketStatus] = useSocket();
+  const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
   const [createRoomEmmited, setCreateRoomEmmited] = useState(false);
   const navigate = useNavigate();
 
@@ -22,14 +22,17 @@ function CreateRoomView() {
     console.log(' submited', userNickName);
   };
 
-  useEffect(() => {
-    if (socketStatus != 'active') return;
+  const roomChangeListener = (room: Room) => {
+    console.log('Created Room: ', room);
+    navigateToRoomView(room.roomId);
+  };
 
-    socket.on('onRoomChange', (room: Room) => {
-      console.log('Created Room: ', room);
-      navigateToRoomView(room.roomId);
-    });
-  }, [socketStatus]);
+  useEffect(() => {
+    socket?.on('onRoomChange', roomChangeListener);
+    return () => {
+      socket?.off('onRoomChange', roomChangeListener);
+    };
+  }, [socket]);
 
   return (
     <TextInputDialog
