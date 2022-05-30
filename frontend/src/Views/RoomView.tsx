@@ -14,12 +14,6 @@ const RoomView: FC = () => {
       console.log('YEE');
     },
   );
-  const [player1, PlayerComponent1] = useYtPlayer(
-    't6isux5XWH0',
-    (playerState: any) => {
-      console.log('YEE');
-    },
-  );
 
   const roomChangeListener = (room: Room) => {
     console.log('Changed state of Room: ', room);
@@ -47,7 +41,6 @@ const RoomView: FC = () => {
       RoomView - {roomId}
       <ClipBoardCoppyLabel label={roomJoinLink} textToCoppy={roomJoinLink} />
       {PlayerComponent}
-      {PlayerComponent1}
       <button onClick={handleBtnClick}>play</button>
       <button onClick={handleBtnPouseClick}>pouse</button>
     </div>

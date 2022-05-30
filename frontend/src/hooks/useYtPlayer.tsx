@@ -7,11 +7,11 @@ export function useYtPlayer(
 ) {
   const anyWindow = window as any;
   const [player, setPlayer] = useState<any>(undefined);
-  const PLAYER_ID = randomString(10);
+  const playerId = randomString(10);
 
   const loadVideo = () => {
     // the Player object is created uniquely based on the id in props
-    const player = new anyWindow.YT.Player(`youtube-player-${PLAYER_ID}`, {
+    const player = new anyWindow.YT.Player(`youtube-player-${playerId}`, {
       videoId: ytVideId,
       events: {
         onReady: onPlayerReady,
@@ -35,12 +35,12 @@ export function useYtPlayer(
     } else {
       loadVideo();
     }
-  }, []);
+  }, [playerId]);
 
   return [
     player,
     <div>
-      <div id={`youtube-player-${PLAYER_ID}`} />
+      <div id={`youtube-player-${playerId}`} />
     </div>,
   ];
 }
