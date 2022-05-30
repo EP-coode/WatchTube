@@ -1,5 +1,5 @@
 import { jsx } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { randomString } from '../helpers/random';
 import { IYoutubePleyer } from '../interfaces/IYoutubePlayer';
 
@@ -9,7 +9,7 @@ export function useYtPlayer(
 ) {
   const anyWindow = window as any;
   const [player, setPlayer] = useState<any>(undefined);
-  const playerId = randomString(10);
+  const playerId = useMemo(()=> randomString(10), []);
 
   const loadVideo = () => {
     // the Player object is created uniquely based on the id in props
@@ -37,7 +37,7 @@ export function useYtPlayer(
     } else {
       loadVideo();
     }
-  }, [playerId]);
+  }, []);
 
   return [
     player,
