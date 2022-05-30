@@ -28,6 +28,10 @@ const RoomView: FC = () => {
 
   const roomJoinLink = `http://localhost:3000/joinRoom/${roomId}`;
 
+  const handleVieoIdInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    player?.loadVideoById(e.target.value);
+  };
+
   const handleBtnClick = () => {
     player?.playVideo();
   };
@@ -43,6 +47,7 @@ const RoomView: FC = () => {
       {PlayerComponent}
       <button onClick={handleBtnClick}>play</button>
       <button onClick={handleBtnPouseClick}>pouse</button>
+      <input type="text" onChange={handleVieoIdInput} placeholder="video id" />
     </div>
   );
 };

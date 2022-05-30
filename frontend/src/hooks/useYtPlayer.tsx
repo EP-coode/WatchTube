@@ -1,5 +1,7 @@
+import { jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { randomString } from '../helpers/random';
+import { IYoutubePleyer } from '../interfaces/IYoutubePlayer';
 
 export function useYtPlayer(
   ytVideId: string,
@@ -42,5 +44,5 @@ export function useYtPlayer(
     <div>
       <div id={`youtube-player-${playerId}`} />
     </div>,
-  ];
+  ] as [IYoutubePleyer | undefined, JSX.Element];
 }
