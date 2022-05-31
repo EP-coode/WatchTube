@@ -1,19 +1,16 @@
-import React, { FC, useContext, useEffect } from 'react';
+import { Box, Grid } from '@mui/material';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Room } from 'watch-tube-backend/common/Room';
 import ClipBoardCoppyLabel from '../Components/ClipBoardCoppyLabel';
+import { MovieController } from '../Components/MovieController';
 import { ISokcketContext, SocketContext } from '../Context/SocketContext';
 import { useYtPlayer } from '../hooks/useYtPlayer';
 
 const RoomView: FC = () => {
   const { roomId } = useParams();
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
-  const [player, PlayerComponent] = useYtPlayer(
-    't6isux5XWH0',
-    (playerState: any) => {
-      console.log('YEE');
-    },
-  );
+  const [movieId, setMovieId] = useState('t6isux5XWH0');
 
   const roomChangeListener = (room: Room) => {
     console.log('Changed state of Room: ', room);
@@ -28,27 +25,21 @@ const RoomView: FC = () => {
 
   const roomJoinLink = `http://localhost:3000/joinRoom/${roomId}`;
 
-  const handleVieoIdInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    player?.loadVideoById(e.target.value);
-  };
-
-  const handleBtnClick = () => {
-    player?.playVideo();
-  };
-
-  const handleBtnPouseClick = () => {
-    player?.pauseVideo();
-  };
-
   return (
-    <div>
-      RoomView - {roomId}
-      <ClipBoardCoppyLabel label={roomJoinLink} textToCoppy={roomJoinLink} />
-      {PlayerComponent}
-      <button onClick={handleBtnClick}>play</button>
-      <button onClick={handleBtnPouseClick}>pouse</button>
-      <input type="text" onChange={handleVieoIdInput} placeholder="video id" />
-    </div>
+    <Grid container>
+      <Grid item xs={12} md={9}>
+        SearchBar
+      </Grid>
+      <Grid item xs={12} md={3}>
+        <ClipBoardCoppyLabel label={roomJoinLink} textToCoppy={roomJoinLink} />
+      </Grid>
+      <Grid item xs={12} md={9} sx={{ height: '80vh' }}>
+        <MovieController movieId={movieId} />
+      </Grid>
+      <Grid item xs={3}>
+        Chat
+      </Grid>
+    </Grid>
   );
 };
 

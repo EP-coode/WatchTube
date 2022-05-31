@@ -18,13 +18,14 @@ export default function ClipBoardCoppyLabel({ label, textToCoppy }: Props) {
   return (
     <Box
       sx={{
-        display: 'inline-flex',
+        display: 'flex',
         gap: 1,
         alignItems: 'center',
         m: 1,
+        flexDirection: 'row',
       }}
     >
-      <span>{label}</span>
+      <span style={{ overflowWrap: 'anywhere' }}>{label}</span>
       <IconButton onClick={handleCoppyClick}>
         <ContentCopyIcon />
       </IconButton>
