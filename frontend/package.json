@@ -22,6 +22,7 @@
     "react-router-dom": "^6.3.0",
     "redux": "^4.2.0",
     "socket.io-client": "^4.5.1",
+    "uuid": "^8.3.2",
     "watch-tube-backend": "file:../backend/src"
   },
   "devDependencies": {
