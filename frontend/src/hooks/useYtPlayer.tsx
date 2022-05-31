@@ -1,4 +1,3 @@
-import { jsx } from '@emotion/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { randomString } from '../helpers/random';
 import { IYoutubePleyer, PlayerState } from '../interfaces/IYoutubePlayer';
@@ -34,7 +33,9 @@ export function useYtPlayer(
     });
   };
 
-  const onPlayerReady = (event: any) => {};
+  const onPlayerReady = (event: any) => {
+    setPlayer(event.target);
+  };
 
   useEffect(() => {
     if (!anyWindow.YT) {
