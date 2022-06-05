@@ -15,5 +15,6 @@ export interface IYoutubePleyer {
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
   loadVideoById: (ytVideoId: string) => void;
   getPlayerState: () => PlayerState;
-  getCurrentTime: () => number;
+  getCurrentTime: () => number; 
+  cueVideoById: (videoId: string, startSeconds?: number) => void;
 }
