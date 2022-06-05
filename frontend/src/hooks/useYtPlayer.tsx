@@ -12,7 +12,7 @@ export function useYtPlayer(
   const [player, setPlayer] = useState<undefined | IYoutubePleyer>(undefined);
   const playerId = useMemo(() => randomString(10), []);
 
-  const loadVideo = () => {
+  const onYoutubeLoad = () => {
     const handlePleyerStateChange = ({ data }: any) => {
       if (player == undefined) return;
       const newPlayerState = data;
@@ -38,16 +38,20 @@ export function useYtPlayer(
   };
 
   useEffect(() => {
+    console.log(`New movie: ${ytVideId}`);
+  
     if (!anyWindow.YT) {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
-      anyWindow.onYouTubeIframeAPIReady = loadVideo;
+      anyWindow.onYouTubeIframeAPIReady = onYoutubeLoad;
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-    } else {
-      loadVideo();
     }
   }, []);
+
+  useEffect(() => {
+    player?.cueVideoById(ytVideId);
+  }, [ytVideId]);
 
   return [
     player,
