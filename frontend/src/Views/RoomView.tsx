@@ -1,22 +1,25 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { Grid, TextField } from '@mui/material';
+import { Grid, Skeleton, TextField } from '@mui/material';
 
 import { Room } from 'watch-tube-backend/common/Room';
 import ClipBoardCoppyLabel from '../Components/ClipBoardCoppyLabel';
 import { MovieController } from '../Components/MovieController';
 import { ISokcketContext, SocketContext } from '../Context/SocketContext';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import { ParticipantsManagmentPanel } from '../Components/ParticipantsManagmentPanel';
 
 const RoomView: FC = () => {
   const { roomId } = useParams();
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
   const [movieId, setMovieId] = useState('t6isux5XWH0');
+  const [roomInfo, setRoomInfo] = useState<Room | undefined>();
   const debouncedMovieId = useDebouncedValue(movieId);
 
   const roomChangeListener = (room: Room) => {
     console.log('Changed state of Room: ', room);
+    setRoomInfo(room);
   };
 
   // TODO debounce
@@ -28,6 +31,7 @@ const RoomView: FC = () => {
 
   useEffect(() => {
     socket?.on('onRoomChange', roomChangeListener);
+    if (roomId) socket?.emit('getRoomInfo', roomId);
     return () => {
       socket?.off('onRoomChange', roomChangeListener);
     };
@@ -62,9 +66,24 @@ const RoomView: FC = () => {
       <Grid item xs={12} md={9} sx={{ height: '80vh' }}>
         <MovieController movieId={debouncedMovieId} />
       </Grid>
-      <Grid item container xs={3}>
+      <Grid item container xs={12} md={3}>
         <Grid item xs={12}>
-          Parcitipants
+          {roomInfo ? (
+            <ParticipantsManagmentPanel
+              owner={roomInfo.owner}
+              participants={[
+                { nickName: 'Joshua', userId: 'asdfg' },
+                { nickName: 'Mark', userId: 'asdf2g' },
+                { nickName: 'Bob', userId: 'asd43fg' },
+              ]}
+            />
+          ) : (
+            <>
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" />
+            </>
+          )}
         </Grid>
         <Grid item xs={12}>
           Chat
