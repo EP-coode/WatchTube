@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  userId   Int    @id @default(autoincrement())
+  roomId   Int
+  socketId String
+  nickName String
+
+  canPlayPouse   Boolean
+  canSeek        Boolean
+  canSelectMovie Boolean
+
+  roomParticipant Room  @relation(fields: [roomId], references: [roomId], name: "user_room")
+  ownedRoom       Room? @relation(name: "room_owner")
+}
+
+model Room {
+  roomId       Int      @id @default(autoincrement())
+  socketRoomId String
+  ownerId      Int      @unique
+  movieId      Int
+  createdAt    DateTime @default(now())
+  owner        User     @relation(fields: [ownerId], references: [userId], name: "room_owner")
+  participants User[]   @relation(name: "user_room")
+  movie        Movie    @relation(fields: [movieId], references: [movieId])
+}
+
+model Movie {
+  movieId         Int     @id @default(autoincrement())
+  ytMovieId       String
+  isPlaying       Boolean
+  currentProggres BigInt
+  Room            Room[]
+}
