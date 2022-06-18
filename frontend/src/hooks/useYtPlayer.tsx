@@ -7,7 +7,7 @@ export function useYtPlayer(
   ytVideId: string,
   onPlay?: () => void,
   onPouse?: () => void,
-  onSeek?: (proggres: number) => void,
+  onSeek?: (progres: number) => void,
 ) {
   const anyWindow = window as any;
   const [player, setPlayer] = useState<undefined | IYoutubePleyer>(undefined);
@@ -30,8 +30,10 @@ export function useYtPlayer(
           const newPlayerState = data;
           const currentTime = player.getCurrentTime();
 
-          if (newPlayerState == PlayerState.PLAYING) onPlay?.();
-          else if (newPlayerState == PlayerState.PAUSED) onPouse?.();
+          if (newPlayerState == PlayerState.PLAYING) {
+            onSeek?.(currentTime);
+            onPlay?.();
+          } else if (newPlayerState == PlayerState.PAUSED) onPouse?.();
           else if (newPlayerState == PlayerState.BUFFERING)
             onSeek?.(currentTime);
         },

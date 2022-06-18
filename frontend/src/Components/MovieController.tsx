@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Movie } from 'watch-tube-backend/common/Movie';
 import { ISokcketContext, SocketContext } from '../Context/SocketContext';
@@ -9,9 +9,11 @@ type Props = {
   movieId: string;
 };
 
+const MIN_SEEK_DIFF = 2000;
+
 export function MovieController({ movieId }: Props) {
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
-  
+
   const handlePlayerSeek = (progress: number) => {
     socket?.emit('seekTo', progress);
     console.log('seekTo ', progress);
@@ -38,10 +40,12 @@ export function MovieController({ movieId }: Props) {
     if (player == undefined) return;
 
     const state = player.getPlayerState();
+    const localCurrentProgres = player.getCurrentTime();
     if (isPlaying && state != PlayerState.PLAYING) player.playVideo();
     else player.pauseVideo();
 
-    player?.seekTo(currentProggres, false);
+    if (Math.abs(localCurrentProgres - currentProggres) > MIN_SEEK_DIFF)
+      player?.seekTo(currentProggres, false);
   };
 
   useEffect(() => {
