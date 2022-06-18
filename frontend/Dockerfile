@@ -1,15 +1,20 @@
-FROM node
+# ============ BUILD ENV =============
+FROM node as build_env
 
-WORKDIR /usr/src/app
+# coppy src
+WORKDIR /
+COPY ./frontend /frontend
+COPY ./backend/src /backend/src
 
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY package*.json ./
-
+WORKDIR /frontend
 RUN npm install
+RUN npm run build
 
-COPY . .
+# =========== SERVE ENV ===============
+FROM nginx as serve_env
 
-EXPOSE 3000
+COPY --from=build_env /frontend/dist /usr/share/nginx/html
 
-CMD [ "npm", "run", "dev" ]
+COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+CMD [ "nginx", "-g", "daemon off;" ]
