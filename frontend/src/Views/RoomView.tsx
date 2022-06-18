@@ -12,7 +12,7 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 const RoomView: FC = () => {
   const { roomId } = useParams();
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
-  const [movieId, setMovieId] = useState('t6isux5XWH0');
+  const [movieId, setMovieId] = useState('UQZ3ea9w3pM');
   const debouncedMovieId = useDebouncedValue(movieId);
 
   const roomChangeListener = (room: Room) => {
