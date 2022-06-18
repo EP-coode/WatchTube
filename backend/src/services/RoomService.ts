@@ -21,6 +21,9 @@ export class RoomService implements IRoomService {
   }
   getParticipantRoomId(userId: string): string {
     const room = RoomService.rooms.find((r) => {
+      if (r.owner.userId === userId) {
+        return true;
+      }
       const u = r.participants.find((u) => u.userId === userId);
       if (u == undefined) {
         return false;

@@ -3,11 +3,11 @@ import { Movie } from './Movie';
 
 export class Room {
   participants: User[];
-  public movie?: Movie;
+  public movie: Movie | null;
 
   constructor(public roomId: string, public owner: User) {
     this.participants = [];
-    this.movie = undefined;
+    this.movie = null;
   }
 
   addParticipant(user: User) {
