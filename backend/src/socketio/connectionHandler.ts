@@ -5,6 +5,7 @@ import { io } from '..';
 import { registerRoomHandlers } from './roomHandler';
 import { RoomService } from '../services/RoomService';
 import { UserService } from '../services/UserService';
+import { registerMovieHandlers } from './movieHandler';
 
 export const onConnection = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
@@ -13,4 +14,5 @@ export const onConnection = (
   socket.emit('ping', 'hello new user');
   io.emit('ping', 'hello all');
   registerRoomHandlers(io, socket, new RoomService(), new UserService());
+  registerMovieHandlers(io, socket, new RoomService(), new UserService());
 };
