@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Movie } from 'watch-tube-backend/common/Movie';
 import { ISokcketContext, SocketContext } from '../Context/SocketContext';
 import { useYtPlayer } from '../hooks/useYtPlayer';
@@ -11,7 +11,7 @@ type Props = {
 
 export function MovieController({ movieId }: Props) {
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
-
+  
   const handlePlayerSeek = (progress: number) => {
     socket?.emit('seekTo', progress);
     console.log('seekTo ', progress);
