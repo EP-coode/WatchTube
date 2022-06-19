@@ -9,7 +9,7 @@ import { IUserService } from '../services/IUserService';
 import { Room } from '../common/Room';
 import { Movie } from '../common/Movie';
 
-const DEFAULT_MOVIE = 'UQZ3ea9w3pM';
+const DEFAULT_MOVIE = 'rvrZJ5C_Nwg';
 
 export const registerRoomHandlers = async (
   io: Server<ClientToServerEvents, ServerToClientEvents>,
@@ -40,26 +40,38 @@ export const registerRoomHandlers = async (
 
     const alreadyInRoom =
       room.isOwner(user) ||
-      room.participants.findIndex((u) => u.userId != socket.id);
+      room.participants.findIndex((u) => u.userId == socket.id);
 
     if (alreadyInRoom != -1) return Promise.resolve();
 
+    userService.addUser(user);
     room.addParticipant(user);
     await socket.join(roomId);
 
     io.to(roomId).emit('onRoomChange', room);
   });
 
-  await socket.on('disconnect', async () => {
+  await socket.on('getRoomInfo', async (roomId) => {
+    const room = roomService.getRoomById(roomId);
+    if (room == undefined) return Promise.resolve();
+    socket.emit('onRoomChange', room);
+  });
+
+  await socket.on('disconnecting', async () => {
     const user = userService.getUsersBuId(socket.id);
+    const users = userService.getUsers();
 
     if (user == undefined) return Promise.resolve();
 
-    for (const roomId in socket.rooms) {
+    socket.rooms.forEach((roomId) => {
       const room = roomService.getRoomById(roomId);
-      if (room == undefined) continue;
+      if (room == undefined) return;
 
       userService.removeUser(user.userId);
+      room.participants = room.participants.filter(
+        (u) => u.userId != user.userId,
+      );
+      io.to(room.roomId).emit('onRoomChange', room);
 
       if (room.isOwner(user)) {
         roomService.removeRoom(room.roomId);
@@ -67,6 +79,6 @@ export const registerRoomHandlers = async (
       } else {
         io.to(user.userId).emit('onRoomClose');
       }
-    }
+    });
   });
 };

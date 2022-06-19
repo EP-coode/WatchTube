@@ -7,5 +7,8 @@ export interface ServerToClientEvents {
   onRoomChange: (room: Room) => void;
   onUserChange: (user: User) => void;
   onRoomClose: () => void;
-  onMovieChange: (movie: Movie) => void;
+  onMovieChange: (ytMovieId: string) => void;
+  onSeekTo: (progres: number) => void;
+  onPlay: () => void;
+  onPause: () => void;
 }

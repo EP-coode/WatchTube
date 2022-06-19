@@ -20,7 +20,7 @@ export const registerMovieHandlers = async (
         return Promise.resolve();
       } else {
         room.movie.currentProggres = progress;
-        io.to(roomId).emit('onMovieChange', room.movie);
+        io.to(roomId).emit('onSeekTo', progress);
       }
     }
   });
@@ -32,7 +32,7 @@ export const registerMovieHandlers = async (
       return Promise.resolve();
     } else {
       room.movie = movie;
-      io.to(roomId).emit('onMovieChange', movie);
+      io.to(roomId).emit('onMovieChange', ytMovieId);
     }
   });
   await socket.on('playMovie', async () => {
@@ -43,7 +43,7 @@ export const registerMovieHandlers = async (
         return Promise.resolve();
       } else {
         room.movie.isPlaying = true;
-        io.to(roomId).emit('onMovieChange', room.movie);
+        io.to(roomId).emit('onPlay');
       }
     }
   });
@@ -55,7 +55,7 @@ export const registerMovieHandlers = async (
         return Promise.resolve();
       } else {
         console.log(room.movie);
-        io.to(roomId).emit('onMovieChange', room.movie);
+        io.to(roomId).emit('onPause');
       }
     }
   });

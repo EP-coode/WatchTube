@@ -7,4 +7,5 @@ export interface ClientToServerEvents {
   playMovie: () => void;
   pouseMovie: () => void;
   canPlay: () => void;
+  getRoomInfo: (roomId: string) => void;
 }
