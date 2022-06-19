@@ -9,7 +9,7 @@ import { IUserService } from '../services/IUserService';
 import { Room } from '../common/Room';
 import { Movie } from '../common/Movie';
 
-const DEFAULT_MOVIE = 'UQZ3ea9w3pM';
+const DEFAULT_MOVIE = 'rvrZJ5C_Nwg';
 
 export const registerRoomHandlers = async (
   io: Server<ClientToServerEvents, ServerToClientEvents>,

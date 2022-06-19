@@ -13,7 +13,7 @@ import { ParticipantsManagmentPanel } from '../Components/ParticipantsManagmentP
 const RoomView: FC = () => {
   const { roomId } = useParams();
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
-  const [movieId, setMovieId] = useState('t6isux5XWH0');
+  const [movieId, setMovieId] = useState('rvrZJ5C_Nwg');
   const [roomInfo, setRoomInfo] = useState<Room | undefined>();
   const debouncedMovieId = useDebouncedValue(movieId);
 
