@@ -7,6 +7,9 @@ import { User } from '../common/User';
 import { IRoomService } from '../services/IRoomService';
 import { IUserService } from '../services/IUserService';
 import { Room } from '../common/Room';
+import { Movie } from '../common/Movie';
+
+const DEFAULT_MOVIE = 'UQZ3ea9w3pM';
 
 export const registerRoomHandlers = async (
   io: Server<ClientToServerEvents, ServerToClientEvents>,
@@ -20,6 +23,7 @@ export const registerRoomHandlers = async (
 
     const roomId = randomBytes(16).toString('hex');
     const room = new Room(roomId, user);
+    room.movie = new Movie(DEFAULT_MOVIE, true, 0);
     roomService.addRoom(room);
 
     await socket.join(roomId);

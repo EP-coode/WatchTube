@@ -19,4 +19,22 @@ export class RoomService implements IRoomService {
   removeRoom(roomId: string) {
     RoomService.rooms = RoomService.rooms.filter((r) => r.roomId != roomId);
   }
+  getParticipantRoomId(userId: string): string {
+    const room = RoomService.rooms.find((r) => {
+      if (r.owner.userId === userId) {
+        return true;
+      }
+      const u = r.participants.find((u) => u.userId === userId);
+      if (u == undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    if (room == undefined) {
+      return '';
+    } else {
+      return room.roomId;
+    }
+  }
 }
