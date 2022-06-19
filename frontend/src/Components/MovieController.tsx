@@ -9,7 +9,7 @@ type Props = {
   movieId: string;
 };
 
-const MIN_SEEK_DIFF = 2000;
+const MIN_SEEK_DIFF = 2;
 
 export function MovieController({ movieId }: Props) {
   const { socket, socketStatus } = useContext(SocketContext) as ISokcketContext;
@@ -36,24 +36,32 @@ export function MovieController({ movieId }: Props) {
     handlePlayerSeek,
   );
 
-  const handleRemotePlayerChange = ({ isPlaying, currentProggres }: Movie) => {
+  const handleRemotePlay = () => {
+    player?.playVideo();
+  };
+
+  const handleRemotePouse = () => {
+    player?.pauseVideo();
+  };
+
+  const handleRemoteSeek = (progress: number) => {
     if (player == undefined) return;
 
-    const state = player.getPlayerState();
-    const localCurrentProgres = player.getCurrentTime();
-    if (isPlaying && state != PlayerState.PLAYING) player.playVideo();
-    else player.pauseVideo();
-
-    if (Math.abs(localCurrentProgres - currentProggres) > MIN_SEEK_DIFF)
-      player?.seekTo(currentProggres, false);
+    const currentTime = player.getCurrentTime();
+    const canSeek = Math.abs(progress - currentTime) > MIN_SEEK_DIFF;
+    if (canSeek) player.seekTo(progress, true);
   };
 
   useEffect(() => {
-    socket?.on('onMovieChange', handleRemotePlayerChange);
+    socket?.on('onPlay', handleRemotePlay);
+    socket?.on('onPause', handleRemotePouse);
+    socket?.on('onSeekTo', handleRemoteSeek);
     return () => {
-      socket?.off('onMovieChange', handleRemotePlayerChange);
+      socket?.off('onPlay', handleRemotePlay);
+      socket?.off('onPause', handleRemotePouse);
+      socket?.off('onSeekTo', handleRemoteSeek);
     };
-  }, [socket]);
+  }, [socket, player]);
 
   return (
     <Box

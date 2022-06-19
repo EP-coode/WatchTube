@@ -26,10 +26,16 @@ const RoomView: FC = () => {
     setMovieId(e.target.value);
   };
 
+  const handleRemoteMovieIdChange = (movieId: string) => {
+    setMovieId(movieId)
+  }
+  
   useEffect(() => {
     socket?.on('onRoomChange', roomChangeListener);
+    socket?.on('onMovieChange', handleRemoteMovieIdChange);
     return () => {
       socket?.off('onRoomChange', roomChangeListener);
+      socket?.off('onMovieChange', handleRemoteMovieIdChange);
     };
   }, [socket]);
 
