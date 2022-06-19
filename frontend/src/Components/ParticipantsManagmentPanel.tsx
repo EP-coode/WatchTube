@@ -46,7 +46,7 @@ export function ParticipantsManagmentPanel({ owner, participants }: Props) {
     <Box>
       <Typography>Właściciel: {owner.nickName}</Typography>
       <Typography>Członkowie: </Typography>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {ParticipantsComponents}
       </List>
     </Box>

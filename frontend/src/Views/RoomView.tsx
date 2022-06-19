@@ -30,12 +30,15 @@ const RoomView: FC = () => {
   };
 
   const handleRemoteMovieIdChange = (movieId: string) => {
-    setMovieId(movieId)
-  }
-  
+    setMovieId(movieId);
+  };
+
   useEffect(() => {
     socket?.on('onRoomChange', roomChangeListener);
-    if (roomId) socket?.emit('getRoomInfo', roomId);
+    socket?.on('onMovieChange', handleRemoteMovieIdChange);
+    if (roomId) {
+      socket?.emit('getRoomInfo', roomId);
+    }
     return () => {
       socket?.off('onRoomChange', roomChangeListener);
       socket?.off('onMovieChange', handleRemoteMovieIdChange);
@@ -76,11 +79,7 @@ const RoomView: FC = () => {
           {roomInfo ? (
             <ParticipantsManagmentPanel
               owner={roomInfo.owner}
-              participants={[
-                { nickName: 'Joshua', userId: 'asdfg' },
-                { nickName: 'Mark', userId: 'asdf2g' },
-                { nickName: 'Bob', userId: 'asd43fg' },
-              ]}
+              participants={roomInfo.participants}
             />
           ) : (
             <>
@@ -91,7 +90,7 @@ const RoomView: FC = () => {
           )}
         </Grid>
         <Grid item xs={12}>
-          Chat
+          {/* Chat */}
         </Grid>
       </Grid>
     </Grid>
