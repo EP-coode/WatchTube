@@ -37,11 +37,19 @@ export function MovieController({ movieId }: Props) {
   );
 
   const handleRemotePlay = () => {
-    player?.playVideo();
+    if (player == undefined) return;
+
+    const canPlay = player.getPlayerState() == PlayerState.PAUSED;
+
+    if (canPlay) player.playVideo();
   };
 
   const handleRemotePouse = () => {
-    player?.pauseVideo();
+    if (player == undefined) return;
+
+    const canPause = player.getPlayerState() == PlayerState.PLAYING;
+
+    if (canPause) player.pauseVideo();
   };
 
   const handleRemoteSeek = (progress: number) => {
